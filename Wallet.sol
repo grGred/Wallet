@@ -153,6 +153,7 @@ contract Wallet {
     // event ApprovalEth
     function approveEth(address _spender, uint _value) external {
         require(_spender != msg.sender, "You are already allowed to move your Ether");
+        require(balanceOf[msg.sender] => _value, "You cannot approve more Eth then you have");
         allowanceEth[msg.sender][_spender] = _value;
         emit ApprovalEth(msg.sender, _spender, _value);
     }
@@ -164,6 +165,7 @@ contract Wallet {
     //  event ApprovalToken
     function approveToken(address _spender, IERC20 _token_addr, uint _value) external {
         require(_spender != msg.sender, "You are already allowed to move your Tokens");
+        require(_token_addr.balanceOf(address(this)) >= _value, "You cannot approve more tokens then you have");
         allowanceToken[msg.sender][_spender][_token_addr] = _value;
         emit ApprovalToken(msg.sender, _spender, _token_addr, _value);
     }
